@@ -17,6 +17,7 @@ App::App(int win_width_, int win_height_)
     render_witdh = RENDERER_WIN_WIDTH; render_height = RENDERER_WIN_HEIGHT;
     ui_padding = 12;
     
+    // --- Texturas --- ///
     textures.insert({"lua", new Textura("texturas/textura_lua.jpg")});
     textures.insert({"gargantua", new Textura("texturas/textura_gargantua.jpg")});
     textures.insert({"nave", new Textura("texturas/textura_nave.png")});
@@ -34,17 +35,9 @@ App::App(int win_width_, int win_height_)
     textures.insert({"saturn", new Textura("texturas/saturn.jpg")});
     textures.insert({"saturn_ring", new Textura("texturas/saturn_ring.jpg")});
 
-    // Malhas
-    //load_new_mesh("models/Cube.obj", {0.25, 0, 0}, "Cube");
-    //load_new_mesh("models/ovni_base.obj", {0.75, 0.75, 0.75}, "ovni", textures.at("ovni_base"), true);
-    //load_new_mesh("models/ovni_cima.obj", {0.75, 0.75, 0.75}, "ovni", textures.at("ovni_cima"), true);
-    //load_new_mesh("models/chama.obj", {0.75, 0.75, 0.75}, "chama nave", textures.at("chama"), true);
-
     scene->set_background_tex(textures.at("skybox"));
-
     
     Vector3R earth_pos = {500, 300, 700};
-
     create_estacao({500, 500, 500});
     create_foguete({230, 150, 800}, 5);
     create_ovni(earth_pos + Vector3R{0, 30 + 60, 0}, 10);
@@ -111,7 +104,7 @@ App::App(int win_width_, int win_height_)
         0,
         {{0, 0, 0}, 0, 0, 0, 0, 0},
         textures.at("gargantua"),
-        "Gargantula_Ring",
+        "Gargantua_Ring",
         true
     );
     scene->push_shape(gargantua_ring);
@@ -122,7 +115,7 @@ App::App(int win_width_, int win_height_)
         0,
         {{0, 0, 0}, 0, 0, 0, 0, 0},
         textures.at("gargantua"),
-        "Gargantula_Ring",
+        "Gargantua_Ring",
         true
     );
     scene->push_shape(gargantua_ring2);
@@ -131,7 +124,7 @@ App::App(int win_width_, int win_height_)
         200,
         {{0, 0, 0}, 0, 0, 0, 0, 0},
         nullptr,
-        "Gargantula"
+        "Gargantua"
     ));
 
     // Luzes
@@ -311,6 +304,8 @@ void App::create_estacao(Vector3R pos){
         nullptr,
         "estacao_base3"
     ));
+
+
     Mesh3* estacao_cabine = Mesh3::create_from_obj_file("models/Cube.obj", planet_material({0.25, 0, 0}), "estacao_cabine", textures.at("estacao_cabine"), true);
     estacao_cabine->transform(get_scale_matrix({15, 15, 15}));
     estacao_cabine->transform(get_translation_matrix(axis*(8+10+18) + pos));
@@ -336,6 +331,9 @@ void App::create_estacao(Vector3R pos){
     placa_solar4->transform(get_translation_matrix(Vector3R{10, 8+5, 0} + pos));
     placa_solar4->transform(get_scale_matrix({30, 0.1, 5}));
     scene->push_shape(placa_solar4);
+
+    Vector3R pos1 = pos + axis*(8+10);
+    Vector3R pos2 = axis*(8+10+18) + pos;
 }
 
 void App::create_foguete(Vector3R pos, float scale){

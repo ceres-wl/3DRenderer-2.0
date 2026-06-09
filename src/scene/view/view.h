@@ -38,7 +38,6 @@ class View{
         void set_dimensions(Vector3R dims);
 
         void set_up(Vector3R up);
-        void set_forward(Vector3R forw);
 
         void set_zoom(float amount);
 

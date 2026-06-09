@@ -8,10 +8,8 @@
 #include "UI/MainWindow.h"
 #include "../Viewport/Viewport.h"
 
-// Temporario, tirar daqui depois
 #include "../scene/objects/Lights/Point/PointLight.h"
 #include "../scene/objects/Lights/Directional/DirectionalLight.h"
-// Esse não sei se é temporario, mas deve ir pra outro lugar em alguma refatoração
 #include "../scene/objects/Mesh3/Mesh3.h"
 #include "../scene/objects/Cylinder/Cylinder.h"
 #include "../scene/objects/Sphere/Sphere.h"
@@ -23,21 +21,12 @@
 #define RENDERER_WIN_WIDTH 500
 #define RENDERER_WIN_HEIGHT 500
 
-/* TODO: Especificações do trabalho(Separado por dificuldade):
-    Díficil(ou trabalhoso):
-    - Determinar o cenário
-    - Fonte spot e direcional, a ambiente tá hardcoded, tem que ajeitar também (+)
-    - perspectiva com pontos de fuga? não lembro o que é isso (+)
-
-    Médio:
-    - Transformações, falta cisalhamento e espelho em relação a um plano[Householder] (+)
-    - Projeção obliqua (+)
-*/
-
 // TODO: mover os todos pros arquivos relevantes :P
 // ---------------- Outros ToDos ---------------- //
 
 // TODO: thread pra UI
+
+// TODO: Fonte de iluminação Spot
 
 // TODO: Tou dando clamp em todas as cores que passam de 1, mas o creto deu aquela ideia de pegar a maior cor
 // calculada e dividir todas as cores por ela, que parece bem legal
@@ -55,7 +44,8 @@
 
 // TODO: Calcular u e v só se a textura do objeto for diferente de nullptr, fiz pro plano falta o resto
 
-// TODO: Comentar um pouco o código
+// TODO: Quase certeza que a gente tá usando um método pesadissimo pra inverter matrizes sendo que várias das nossas matrizes são ortogonais,
+// daí acho que tem um método menos geral e mais eficiente pra inverter
 
 // FIXME: Muitas classes tão repetindo boa parte dos construtores, dá pra melhorar o OO pra facilitar nossa vida
 
