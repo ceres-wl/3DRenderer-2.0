@@ -1,4 +1,7 @@
 #include "Viewport.h"
+#include <cmath>
+#include <cstdint>
+#include <cstdlib>
 
 Viewport::Viewport(int width_, int height_, Scene* scene_)
     : threads(thread::hardware_concurrency() - 1, [this](JobData job){ calculate_n_pixels(job); }) // Thats so ugly
@@ -10,6 +13,7 @@ Viewport::Viewport(int width_, int height_, Scene* scene_)
     // texture = LoadTextureFromImage(img);
     // pixels = LoadImageColors(img);
     // UnloadImage(img);
+    pixels = (uint32_t*)malloc(sizeof(uint32_t)*width*height);
 };
 
 
@@ -20,11 +24,15 @@ Viewport::~Viewport()
 }
 
 void Viewport::setPixelColor(int x, int y, Color3 color){
-    // int index = y * texture.width + x;
+    int index = y * width + x;
     // pixels[index].r = color.r;
     // pixels[index].g = color.g;
     // pixels[index].b = color.b;
     // pixels[index].a = color.a;
+    pixels[index] = (((int)floor(color.a) & 0xff) << 24)
+       | (((int)floor(color.r) & 0xff) << 16)
+       | (((int)floor(color.g) & 0xff) << 8)
+       | (((int)floor(color.b) & 0xff));
 }
 
 Color* Viewport::getPixelsRec(int x, int y, int WIDTH, int HEIGHT){
@@ -58,12 +66,22 @@ void Viewport::update(){
 //     return texture;
 // }
 
-Color* Viewport::get_pixels(){
-    return pixels;
+// Color* Viewport::get_pixels(){
+//     return pixels;
+// }
+
+void** Viewport::get_pixels_sdl(){
+    return (void**)pixels;
+}
+
+int* Viewport::get_pitch(){
+    return &width;
 }
 
 void Viewport::calculate_n_pixels(JobData job){
     int x = job.i % width; int y = job.i/height;
+    // cout << x << " " << y << endl;
+
     for(int i = 0; i < job.n; i++){
         Color3 color = scene->calculate_pixel_color(x, y, width, height);
 

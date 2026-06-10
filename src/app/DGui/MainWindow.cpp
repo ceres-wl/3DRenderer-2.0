@@ -1,7 +1,8 @@
 #include "MainWindow.h"
+#include <SDL2/SDL_render.h>
 
-MainWindow::MainWindow(){
-    
+MainWindow::MainWindow(Viewport* view_){
+    view = view_;
     // Setup SDL
 #ifdef _WIN32
     ::SetProcessDPIAware();
@@ -112,6 +113,9 @@ MainWindow::MainWindow(){
 }
 
 void MainWindow::start(){
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+    SDL_Texture* tex = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB32, SDL_TEXTUREACCESS_STREAMING, 500, 500);
+
     bool done = false;
     while (!done){
         // Poll and handle events (inputs, window resize, etc.)
@@ -133,6 +137,11 @@ void MainWindow::start(){
             SDL_Delay(10);
             continue;
         }
+
+        int copyPitch = *view->get_pitch();
+        SDL_LockTexture(tex, NULL, view->get_pixels_sdl(), &copyPitch); 
+        view->update();
+        SDL_UnlockTexture(tex);
 
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
@@ -156,14 +165,19 @@ void MainWindow::start(){
 
         }
 
-        //sdltexture
-
         // Rendering
+        
         ImGui::Render();
-        glViewport(0, 0, (int)io->DisplaySize.x, (int)io->DisplaySize.y);
+        
+        // SDL_RenderClear(renderer);
+        // glViewport(0, 0, (int)io->DisplaySize.x, (int)io->DisplaySize.y);
+        
+        
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        SDL_RenderCopy(renderer, tex, NULL, NULL);
+        SDL_RenderPresent(renderer);
         SDL_GL_SwapWindow(window);
     }
 
@@ -175,4 +189,8 @@ void MainWindow::start(){
     SDL_GL_DeleteContext(gl_context);
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void MainWindow::set_viewport(Viewport* view_){
+    view = view_;
 }

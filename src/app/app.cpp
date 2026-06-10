@@ -6,7 +6,8 @@ Material3 planet_material(Color3 color){
 
 App::App(int win_width_, int win_height_)
     : view(new View({-10, 2, 0}, 2, 2, 1)),
-    scene(new Scene(view))
+    scene(new Scene(view)),
+    win(nullptr)
 {
     win_width = win_width_;
     win_height = win_height_;
@@ -133,6 +134,7 @@ App::App(int win_width_, int win_height_)
     // HACK: se por acaso algum código da ui rodar antes disso aqui o programa vai crashar
     // pq a gente começa passando uma referencia nula pra viewport
     viewport = new Viewport(RENDERER_WIN_WIDTH, RENDERER_WIN_HEIGHT, scene);
+    win.set_viewport(viewport);
 }
 
 void App::start(){

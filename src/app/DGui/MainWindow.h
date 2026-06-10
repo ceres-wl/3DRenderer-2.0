@@ -18,10 +18,17 @@
 #include <windows.h>        // SetProcessDPIAware()
 #endif
 
+#include <SDL2/SDL_pixels.h>
+#include <SDL2/SDL_render.h>
+
+#include "../../Viewport/Viewport.h"
+
 class MainWindow {
     public:
-        MainWindow();
+        MainWindow(Viewport* view_);
         void start();
+
+        void set_viewport(Viewport* view_);
 
     private:
         //UI_STATE* ui_state;
@@ -31,6 +38,9 @@ class MainWindow {
         SDL_Window* window;
         ImGuiIO* io;
         SDL_GLContext gl_context;
+
+        // HACK
+        Viewport* view;
 
         bool windowShouldClose = false;
 };

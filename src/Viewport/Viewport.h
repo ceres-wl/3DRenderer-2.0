@@ -24,7 +24,10 @@ class Viewport{
         //void renderToScreen(View view, int WIDTH, int HEIGHT, const vector<Shape*>& shapes, const vector<Light*>& lights, int anim_speed);
 
         // Texture get_texture();
-        Color* get_pixels();
+        // Color* get_pixels();
+
+        void** get_pixels_sdl();
+        int* get_pitch();
 
         private:
             // Talvez tenha um jeito melhor de gerenciar isso do que a struct texture e o array de cores
@@ -37,7 +40,7 @@ class Viewport{
             // Texture texture;
 
             // Array de pixels da textura
-            Color* pixels;
+            uint32_t* pixels;
 
             // ============= Coisas de thread ============= //
 
