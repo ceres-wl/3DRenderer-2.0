@@ -5,7 +5,7 @@
 #include <chrono>
 #include <map>
 
-#include "UI/MainWindow.h"
+#include "DGui/MainWindow.h"
 #include "../Viewport/Viewport.h"
 
 #include "../scene/objects/Lights/Point/PointLight.h"
@@ -68,6 +68,8 @@ class App{
         void load_new_mesh(string filename, Color3 color, string name, Textura* tex, bool culled);
 
     private:
+        MainWindow win;
+
         int win_width, win_height;
 
         // Variáveis do renderizador
@@ -80,9 +82,6 @@ class App{
         
         // Textura que é renderizada, se uma classe for criada para o renderizador isso aqui tem que ir pra lá
         Viewport* viewport;
-
-        UI_STATE* ui_state;
-        MainWindow ui_win;
         
         float ui_padding;
 

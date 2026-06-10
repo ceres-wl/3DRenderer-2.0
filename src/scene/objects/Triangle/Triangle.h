@@ -14,7 +14,7 @@ class Triangle : public Shape {
         // O triângulo não existe isoladamente, portanto não tem escala
         void scale(Vector3R dims) override {};
         
-        Vector2 vt1, vt2, vt3; // texture vertices
+        // Vector2 vt1, vt2, vt3; // texture vertices
 
         Vector3R get_min_point();
         Vector3R get_max_point();

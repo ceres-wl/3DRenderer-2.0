@@ -4,23 +4,23 @@
 Textura::Textura() {}
 
 Textura::Textura(const char* filename) {
-    Image img = LoadImage(filename);
+    // Image img = LoadImage(filename);
 
-    if (img.data == nullptr) {
-        pixels = nullptr;
-        return;
-    }
+    // if (img.data == nullptr) {
+    //     pixels = nullptr;
+    //     return;
+    // }
     
-    width = img.width;
-    height = img.height;
-    pixels = LoadImageColors(img);
+    // width = img.width;
+    // height = img.height;
+    // pixels = LoadImageColors(img);
 
-    UnloadImage(img);
+    // UnloadImage(img);
 }
 
 Textura::~Textura() {
-    if (pixels)
-        UnloadImageColors(pixels);
+    // if (pixels)
+    //     UnloadImageColors(pixels);
 }
 
 Color3 Textura::sample(float u, float v) const {

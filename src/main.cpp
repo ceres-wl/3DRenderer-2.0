@@ -1,5 +1,3 @@
-#define RAYGUI_IMPLEMENTATION
-
 // ToDo list antiga, vou manter por enquanto mas ignore!!!
 /* ToDo:
     - Implement a better acceleration structure than the bounding box
@@ -10,9 +8,7 @@
 
 #include "./app/app.h"
 
-int main(){
-    SetTraceLogLevel(LOG_WARNING);
-    
+int main(int argv, char** args){
     App app(700, 700);
     
     app.start();

@@ -1,8 +1,6 @@
 #ifndef RENDERER_VIEWPORT_H
 #define RENDERER_VIEWPORT_H
 
-#include <raylib.h>
-
 #include "../utils/ThreadPool.h"
 #include "../scene/view/view.h"
 #include "../scene/Scene.h"
@@ -25,7 +23,7 @@ class Viewport{
         // Mesmo método de cima mas com uma animaçãozinha, a estrutura do código não tá legal mas vou manter comentado caso queira ajeitar depois
         //void renderToScreen(View view, int WIDTH, int HEIGHT, const vector<Shape*>& shapes, const vector<Light*>& lights, int anim_speed);
 
-        Texture get_texture();
+        // Texture get_texture();
         Color* get_pixels();
 
         private:
@@ -36,7 +34,7 @@ class Viewport{
             Scene* scene;
 
             // Textura da raylib
-            Texture texture;
+            // Texture texture;
 
             // Array de pixels da textura
             Color* pixels;

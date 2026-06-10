@@ -30,6 +30,9 @@ Collision Sphere::get_collision(RayR ray){
     col.normal = p.normalize();
     col.hit = true;
 
+    // HACK TEMP 
+    #define PI 3.14159265358979323846
+    
     col.u = 0.5f + std::atan2(col.normal.z, col.normal.x)/(2.0f * PI);
     col.v = 0.5f - std::asin(col.normal.y)/PI;
 

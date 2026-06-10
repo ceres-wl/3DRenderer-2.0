@@ -6,40 +6,40 @@ Viewport::Viewport(int width_, int height_, Scene* scene_)
     width = width_; height = height_;
     scene = scene_;
 
-    Image img = GenImageColor(width, height, BLACK);
-    texture = LoadTextureFromImage(img);
-    pixels = LoadImageColors(img);
-    UnloadImage(img);
+    // Image img = GenImageColor(width, height, BLACK);
+    // texture = LoadTextureFromImage(img);
+    // pixels = LoadImageColors(img);
+    // UnloadImage(img);
 };
 
 
 Viewport::~Viewport()
 {
-    UnloadTexture(texture);
-    UnloadImageColors(pixels);
+    // UnloadTexture(texture);
+    // UnloadImageColors(pixels);
 }
 
 void Viewport::setPixelColor(int x, int y, Color3 color){
-    int index = y * texture.width + x;
-    pixels[index].r = color.r;
-    pixels[index].g = color.g;
-    pixels[index].b = color.b;
-    pixels[index].a = color.a;
+    // int index = y * texture.width + x;
+    // pixels[index].r = color.r;
+    // pixels[index].g = color.g;
+    // pixels[index].b = color.b;
+    // pixels[index].a = color.a;
 }
 
 Color* Viewport::getPixelsRec(int x, int y, int WIDTH, int HEIGHT){
-    if(x + WIDTH > texture.width || y + HEIGHT > texture.height){
-        // Out of bounds
-        throw 3;
-    }
+    // if(x + WIDTH > texture.width || y + HEIGHT > texture.height){
+    //     // Out of bounds
+    //     throw 3;
+    // }
 
     Color* newPixels = new Color[WIDTH*HEIGHT];
 
-    for(int i = 0; i < WIDTH; i++){
-        for(int i2 = 0; i2 < HEIGHT; i2++){
-            newPixels[i2*WIDTH + i] = pixels[(y + i2) * texture.width + x + i];
-        }
-    }
+    // for(int i = 0; i < WIDTH; i++){
+    //     for(int i2 = 0; i2 < HEIGHT; i2++){
+    //         newPixels[i2*WIDTH + i] = pixels[(y + i2) * texture.width + x + i];
+    //     }
+    // }
 
     return newPixels;
 }
@@ -53,10 +53,10 @@ void Viewport::update(){
     threads.await_jobs();
 }
 
-Texture Viewport::get_texture(){
-    // Texture é uma struct bem pequena, não tem muito problema passar por valor
-    return texture;
-}
+// Texture Viewport::get_texture(){
+//     // Texture é uma struct bem pequena, não tem muito problema passar por valor
+//     return texture;
+// }
 
 Color* Viewport::get_pixels(){
     return pixels;

@@ -6,9 +6,7 @@ Material3 planet_material(Color3 color){
 
 App::App(int win_width_, int win_height_)
     : view(new View({-10, 2, 0}, 2, 2, 1)),
-    scene(new Scene(view)),
-    ui_state(new UI_STATE{viewport, false, nullptr, scene}),
-    ui_win(win_width_, win_height_, RENDERER_WIN_WIDTH, RENDERER_WIN_HEIGHT, ui_state)
+    scene(new Scene(view))
 {
     win_width = win_width_;
     win_height = win_height_;
@@ -131,34 +129,27 @@ App::App(int win_width_, int win_height_)
     //scene->push_light(new DirectionalLight({1, 1, 1}, {1, 1, 1}));
 
     // Window configuration
-    SetTargetFPS(60);
 
     // HACK: se por acaso algum código da ui rodar antes disso aqui o programa vai crashar
     // pq a gente começa passando uma referencia nula pra viewport
     viewport = new Viewport(RENDERER_WIN_WIDTH, RENDERER_WIN_HEIGHT, scene);
-    ui_state->viewport = viewport;
 }
 
-void App::start()
-{
-
+void App::start(){
     scene->move_to({562, 463, 615});
     scene->look_at({Vector3R{500, 300, 700} + Vector3R{0, 30 + 60, 0}});
 
-    while(!WindowShouldClose()){
-        process();
-    }
+    win.start();
 
     delete viewport;
     delete scene;
-    delete ui_state;
 
     for(auto tex : textures){
         delete tex.second;
     }
     textures.clear();
     
-    CloseWindow();
+    // CloseWindow();
 }
 
 void App::load_new_mesh(string filename, Color3 color, string name, Textura* tex, bool culled = true){
@@ -172,106 +163,106 @@ void App::load_new_mesh(string filename, Color3 color, string name, Textura* tex
 }
 
 void App::process(){
-    int fps = GetFPS();
     bool moved = true;
 
     // Some screen controls, maybe temporary maybe not, definitely needs some work though
-    if(IsKeyDown(KEY_W)){
-        view->move(0, 0, USER_SPEED);
-        moved = true;
-    }else if(IsKeyDown(KEY_S)){
-        view->move(0, 0, -USER_SPEED);
-        moved = true;
-    }
-    if(IsKeyDown(KEY_A)){
-        view->move(USER_SPEED, 0, 0);
-        moved = true;
-    }else if(IsKeyDown(KEY_D)){
-        view->move(-USER_SPEED, 0, 0);
-        moved = true;
-    }
-    if(IsKeyDown(KEY_SPACE)){
-        view->move(0, USER_SPEED, 0);
-        moved = true;
-    }else if(IsKeyDown(KEY_LEFT_SHIFT)){
-        view->move(0, -USER_SPEED, 0);
-        moved = true;
-    }
-    if(IsKeyDown(KEY_LEFT)){
-        view->rotate(0.1, 0, 0);
-    }else if(IsKeyDown(KEY_RIGHT)){
-        view->rotate(-0.1, 0, 0);
-    }if(IsKeyDown(KEY_UP)){
-        view->rotate(0, -0.1, 0);
-    }else if(IsKeyDown(KEY_DOWN)){
-        view->rotate(0, 0.1, 0);
-    }
-    if(IsKeyDown(KEY_Q)){
-        view->rotate(0, 0, -0.1);
-    }else if(IsKeyDown(KEY_E)){
-        view->rotate(0, 0, 0.1);
-    }
-    if(IsKeyDown(KEY_ENTER) || ui_state->live_rendering){
-        auto start = chrono::high_resolution_clock().now();
-        viewport->update();
-        auto end = chrono::high_resolution_clock().now();
-        UpdateTexture(viewport->get_texture(), viewport->get_pixels());
+    // if(IsKeyDown(KEY_W)){
+    //     view->move(0, 0, USER_SPEED);
+    //     moved = true;
+    // }else if(IsKeyDown(KEY_S)){
+    //     view->move(0, 0, -USER_SPEED);
+    //     moved = true;
+    // }
+    // if(IsKeyDown(KEY_A)){
+    //     view->move(USER_SPEED, 0, 0);
+    //     moved = true;
+    // }else if(IsKeyDown(KEY_D)){
+    //     view->move(-USER_SPEED, 0, 0);
+    //     moved = true;
+    // }
+    // if(IsKeyDown(KEY_SPACE)){
+    //     view->move(0, USER_SPEED, 0);
+    //     moved = true;
+    // }else if(IsKeyDown(KEY_LEFT_SHIFT)){
+    //     view->move(0, -USER_SPEED, 0);
+    //     moved = true;
+    // }
+    // if(IsKeyDown(KEY_LEFT)){
+    //     view->rotate(0.1, 0, 0);
+    // }else if(IsKeyDown(KEY_RIGHT)){
+    //     view->rotate(-0.1, 0, 0);
+    // }if(IsKeyDown(KEY_UP)){
+    //     view->rotate(0, -0.1, 0);
+    // }else if(IsKeyDown(KEY_DOWN)){
+    //     view->rotate(0, 0.1, 0);
+    // }
+    // if(IsKeyDown(KEY_Q)){
+    //     view->rotate(0, 0, -0.1);
+    // }else if(IsKeyDown(KEY_E)){
+    //     view->rotate(0, 0, 0.1);
+    // }
+    // if(IsKeyDown(KEY_ENTER)){
+    //     auto start = chrono::high_resolution_clock().now();
+    //     viewport->update();
+    //     auto end = chrono::high_resolution_clock().now();
+    //     UpdateTexture(viewport->get_texture(), viewport->get_pixels());
 
-        time_elapsed = end - start;
-    }
-    if(IsKeyDown(KEY_J)){
-        scene->move_to(Vector3R{0, 8+10+18+15 + 10, -20} + estacao_pos);
-        scene->look_at(Vector3R{0, 1, 0}*(8+10+18+15 + 10) + estacao_pos);
-        scene->move_to(Vector3R{0, 8+10+18+15 + 10, -40} + estacao_pos);
-        moved = true;
-    }
-    else if(IsKeyDown(KEY_K)){
-        scene->move_to(Vector3R{20, 8+10+18+12, 20} + estacao_pos);
-        scene->look_at(Vector3R{0, 1, 0}*(8+10+18+12) + estacao_pos);
-        moved = true;
-    }
-    else if(IsKeyDown(KEY_L)){
-        scene->move_to(Vector3R{-15, 8+10+18+12 + 15, -15} + estacao_pos);
-        scene->look_at(Vector3R{0, 1, 0}*(8+10+18+12) + estacao_pos);
-        moved = true;
-    }
+    //     time_elapsed = end - start;
+    // }
+    // if(IsKeyDown(KEY_J)){
+    //     scene->move_to(Vector3R{0, 8+10+18+15 + 10, -20} + estacao_pos);
+    //     scene->look_at(Vector3R{0, 1, 0}*(8+10+18+15 + 10) + estacao_pos);
+    //     scene->move_to(Vector3R{0, 8+10+18+15 + 10, -40} + estacao_pos);
+    //     moved = true;
+    // }
+    // else if(IsKeyDown(KEY_K)){
+    //     scene->move_to(Vector3R{20, 8+10+18+12, 20} + estacao_pos);
+    //     scene->look_at(Vector3R{0, 1, 0}*(8+10+18+12) + estacao_pos);
+    //     moved = true;
+    // }
+    // else if(IsKeyDown(KEY_L)){
+    //     scene->move_to(Vector3R{-15, 8+10+18+12 + 15, -15} + estacao_pos);
+    //     scene->look_at(Vector3R{0, 1, 0}*(8+10+18+12) + estacao_pos);
+    //     moved = true;
+    // }
 
-    if(moved){
-        gargantua_ring->rotate_to(view->get_camera_position());
-        MatrixR rot = get_rotation_around_axis(PI/2 - PI/15, {1, 0, 0});
-        gargantua_ring2->set_normal(normal_transform(rot, gargantua_ring->get_normal()));
-    }
+    // TEMP
+    // if(moved){
+    //     gargantua_ring->rotate_to(view->get_camera_position());
+    //     MatrixR rot = get_rotation_around_axis(PI/2 - PI/15, {1, 0, 0});
+    //     gargantua_ring2->set_normal(normal_transform(rot, gargantua_ring->get_normal()));
+    // }
 
     // Pick
-    if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-        Vector2 mouse_pos = GetMousePosition();
-        mouse_pos.x -= win_width-render_witdh;
-        mouse_pos.y -= win_height-render_height;
-        if(mouse_pos.x >= 0 && mouse_pos.y >= 0){
-            ui_state->picked = scene->get_collision(mouse_pos.x, mouse_pos.y, render_witdh, render_height);
-        }
-    }
+    // if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+    //     Vector2 mouse_pos = GetMousePosition();
+    //     mouse_pos.x -= win_width-render_witdh;
+    //     mouse_pos.y -= win_height-render_height;
+    //     if(mouse_pos.x >= 0 && mouse_pos.y >= 0){
+
+    //     }
+    // }
     
-    BeginDrawing();
+    // BeginDrawing();
 
-    ClearBackground(BLACK);
+    // ClearBackground(BLACK);
 
-    DrawTexture(viewport->get_texture(), win_width-render_witdh, win_height-render_height, WHITE);
+    // DrawTexture(viewport->get_texture(), win_width-render_witdh, win_height-render_height, WHITE);
 
     // UI
-    ui_win.render();
+    // win.start();
 
     // Render image displays
 
-    DrawText(to_string(view->get_camera_position().x).insert(0, "cam X: ").c_str(), 0 + win_width-render_witdh + ui_padding, 0 + win_height-render_height + ui_padding, 16, WHITE);
-    DrawText(to_string(view->get_camera_position().y).insert(0, "cam Y: ").c_str(), 0 + win_width-render_witdh + ui_padding, 16 + win_height-render_height + ui_padding, 16, WHITE);
-    DrawText(to_string(view->get_camera_position().z).insert(0, "cam Z: ").c_str(), 0 + win_width-render_witdh + ui_padding, 32 + win_height-render_height + ui_padding, 16, WHITE);
+    // DrawText(to_string(view->get_camera_position().x).insert(0, "cam X: ").c_str(), 0 + win_width-render_witdh + ui_padding, 0 + win_height-render_height + ui_padding, 16, WHITE);
+    // DrawText(to_string(view->get_camera_position().y).insert(0, "cam Y: ").c_str(), 0 + win_width-render_witdh + ui_padding, 16 + win_height-render_height + ui_padding, 16, WHITE);
+    // DrawText(to_string(view->get_camera_position().z).insert(0, "cam Z: ").c_str(), 0 + win_width-render_witdh + ui_padding, 32 + win_height-render_height + ui_padding, 16, WHITE);
 
-    DrawText(to_string(time_elapsed.count()/1000).insert(0, "Time to render: ").append("s").c_str(), 0 + win_width-render_witdh, win_height-render_height + render_height - 24, 24, WHITE);
+    // DrawText(to_string(time_elapsed.count()/1000).insert(0, "Time to render: ").append("s").c_str(), 0 + win_width-render_witdh, win_height-render_height + render_height - 24, 24, WHITE);
 
-    GuiLabel((Rectangle){0 + ui_padding, 0, 32, 16}, to_string(fps).insert(0, "fps: ").c_str());
+    // GuiLabel((Rectangle){0 + ui_padding, 0, 32, 16}, to_string(fps).insert(0, "fps: ").c_str());
 
-    EndDrawing();
+    // EndDrawing();
 }
 
 void App::create_estacao(Vector3R pos){
@@ -370,21 +361,21 @@ void App::create_foguete(Vector3R pos, float scale){
     
     Mesh3* chama = Mesh3::create_from_obj_file("models/Chama.obj", {{0, 0, 0}, 0.5, 0.7, 0.3, 0, 10}, "chama nave", textures.at("chama"), true);
     chama->transform(get_scale_matrix({2.0f*scale, 2.0f*scale, 2.0f*scale}));
-    chama->transform(get_x_rotation(-PI/2));
+    // chama->transform(get_x_rotation(-PI/2));
     chama->transform(get_translation_matrix(axis_foguete*((-2-4 + 3)*scale) + pos_foguete));
     scene->push_shape(chama);
 
     Mesh3* asa1 = Mesh3::create_from_obj_file("models/Triangle.obj", {{0.5, 0, 0}, 0.6, 0.9, 0.2, 0, 5}, "chama nave", nullptr, false);
     asa1->transform(get_scale_matrix({scale, scale, scale}));
-    asa1->transform(get_y_rotation(PI));
+    // asa1->transform(get_y_rotation(PI));
     //asa1->transform(get_x_rotation(PI/2));
     asa1->transform(get_translation_matrix(Vector3R{0, 2.9f*scale, 1*scale} + pos_foguete));
     scene->push_shape(asa1);
 
     Mesh3* asa2 = Mesh3::create_from_obj_file("models/Triangle.obj", {{0.5, 0, 0}, 0.6, 0.9, 0.2, 0, 5}, "chama nave", nullptr, false);
     asa2->transform(get_scale_matrix({scale, scale, scale}));
-    asa2->transform(get_y_rotation(PI));
-    asa2->transform(get_z_rotation(PI));
+    // asa2->transform(get_y_rotation(PI));
+    // asa2->transform(get_z_rotation(PI));
     asa2->transform(get_translation_matrix(Vector3R{0, -2.9f*scale, 1*scale} + pos_foguete));
     scene->push_shape(asa2);
 }

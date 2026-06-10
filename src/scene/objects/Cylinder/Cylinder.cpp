@@ -104,6 +104,9 @@ Collision Cylinder::get_surface_collision(RayR ray){
     float x = radial * U;
     float z = radial * V;
 
+    // HACK TEMP 
+    #define PI 3.14159265358979323846
+
     col.u = 0.5f + atan2(z, x) / (2.0f * PI);
     col.v = col_height / height;
 

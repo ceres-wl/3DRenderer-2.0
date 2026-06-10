@@ -1,8 +1,17 @@
 #ifndef RENDERER_TEXTURA_H
 #define RENDERER_TEXTURA_H
 
-#include "raylib.h"
 #include "../math/Color3.h"
+
+// TODO pensar se isso aqui tá fazendo sentido pro nosso caso
+// Créditos pra raylib
+// Color, 4 components, R8G8B8A8 (32bit)
+typedef struct Color {
+    unsigned char r;        // Color red value
+    unsigned char g;        // Color green value
+    unsigned char b;        // Color blue value
+    unsigned char a;        // Color alpha value
+} Color;
 
 class Textura {
 public:

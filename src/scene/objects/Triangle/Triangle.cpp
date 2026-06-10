@@ -135,8 +135,8 @@ Collision Triangle::get_collision(RayR ray){
     col.normal = plane.get_normal();
 
     float alpha = 1.0f - beta - gamma;
-    col.u = alpha * vt1.x + beta * vt2.x + gamma * vt3.x;
-    col.v = alpha * vt1.y + beta * vt2.y + gamma * vt3.y;
+    // col.u = alpha * vt1.x + beta * vt2.x + gamma * vt3.x;
+    // col.v = alpha * vt1.y + beta * vt2.y + gamma * vt3.y;
 
     return col;
 }

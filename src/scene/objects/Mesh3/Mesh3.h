@@ -29,7 +29,7 @@ class Mesh3 : public Shape {
         typedef struct{
             Vector3R position;
             Vector3R normal;
-            Vector2 uv; 
+            // Vector2 uv; 
         } Vertice;
 
     private:
